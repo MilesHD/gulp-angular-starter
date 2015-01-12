@@ -1,1 +1,2 @@
-Basic Site Template
+Gulp Angular Starter
+=======
