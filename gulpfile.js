@@ -2,6 +2,7 @@ var gulp = require('gulp');
 var connect = require('gulp-connect');
 var compass = require('gulp-compass');
 var concat = require('gulp-concat');
+var karma = require('karma').server;
 
 var bowerComponentsCSS = [
   'bower_components/bootstrap/dist/css/bootstrap.css'
@@ -42,7 +43,8 @@ gulp.task('styles', function() {
 gulp.task('scripts', function() {
     gulp.src('src/**/*.js')
     .pipe(concat('app.js'))
-    .pipe(gulp.dest('dist'));
+    .pipe(gulp.dest('dist'))
+    .pipe(connect.reload());
 });
 
 gulp.task('copy', function() {
@@ -70,4 +72,11 @@ gulp.task('connect', function() {
     });
 });
 
+gulp.task('karma:test', function(done) {
+  karma.start({
+    configFile: __dirname + '/karma.conf.js'
+  }, done);
+});
+
 gulp.task('default', ['bower', 'styles', 'scripts', 'copy', 'connect', 'watch']);
+gulp.task('test', ['connect', 'watch', 'karma:test']);
